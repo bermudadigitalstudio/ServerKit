@@ -78,7 +78,7 @@ public func validateSessionResponse(data: Data?, resp: URLResponse?, err: Error?
   })
 }
 
-func check2xx(data: Data?, resp: HTTPURLResponse) -> Either<(data: Data?, resp: HTTPURLResponse), Error> {
+public func check2xx(data: Data?, resp: HTTPURLResponse) -> Either<(data: Data?, resp: HTTPURLResponse), Error> {
   if resp.statusCode.is2xx {
     return .left((data: data, resp: resp))
   } else {
@@ -86,7 +86,7 @@ func check2xx(data: Data?, resp: HTTPURLResponse) -> Either<(data: Data?, resp: 
   }
 }
 
-func validateResponseIs2xxWithJSON(data: Data?, resp: URLResponse?, err: Error?) -> Either<Any, Error> {
+public func validateResponseIs2xxWithJSON(data: Data?, resp: URLResponse?, err: Error?) -> Either<Any, Error> {
   return validateSessionResponse(data: data, resp: resp, err: err).flatMap(check2xx).flatMap({ (data: Data?, response: HTTPURLResponse) -> (Either<Any, Error>) in
     do {
       guard let d = data else {
@@ -99,7 +99,7 @@ func validateResponseIs2xxWithJSON(data: Data?, resp: URLResponse?, err: Error?)
   })
 }
 
-func validateResponseIs2xxString(data: Data?, resp: URLResponse?, err: Error?) -> Either<String?, Error> {
+public func validateResponseIs2xxString(data: Data?, resp: URLResponse?, err: Error?) -> Either<String?, Error> {
   return validateSessionResponse(data: data, resp: resp, err: err).flatMap(check2xx).flatMap { (data, resp) -> (Either<String?, Error>) in
     guard let d = data else {
       return .left(nil)
@@ -111,7 +111,7 @@ func validateResponseIs2xxString(data: Data?, resp: URLResponse?, err: Error?) -
   }
 }
 
-func encodeObjToJSONStringCrashingOnErrors(_ obj: Any) -> String {
+public func encodeObjToJSONStringCrashingOnErrors(_ obj: Any) -> String {
   do {
     let data = try JSONSerialization.data(withJSONObject: obj, options: [])
     guard let s = String(data: data, encoding: .utf8) else {
