@@ -1,4 +1,5 @@
 import Foundation
+import Dispatch
 
 public extension Int {
   public var is2xx: Bool {
