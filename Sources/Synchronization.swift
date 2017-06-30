@@ -130,3 +130,19 @@ public func encodeStringAsDataCrashingOnErrors(_ string: String) -> Data {
   }
   return bodyAsData
 }
+
+private let check200Session = URLSession(configuration: .default)
+public func check200(_ url: URL) throws {
+  let result = synchronize { (completion) in
+    check200Session.dataTask(with: url) { (data, resp, err) in
+      completion(validateResponseIs2xxString(data: data, resp: resp, err: err))
+    }.resume()
+  }
+  guard case .success(let either) = result else {
+    throw "Timed out getting response from \(url)"
+  }
+  switch either {
+  case .left(_): return
+  case .right(let error): throw error
+  }
+}
