@@ -46,7 +46,7 @@ public func synchronize<T>(timeout: DispatchWallTime = defaultTimeout(), functio
 public enum Either<Left, Right> {
   case left(Left)
   case right(Right)
-  func flatMap<T>(_ closure: (Left) -> (Either<T, Right>)) -> Either<T, Right> {
+  public func flatMap<T>(_ closure: (Left) -> (Either<T, Right>)) -> Either<T, Right> {
     switch self {
     case let .left(l):
       return closure(l)
